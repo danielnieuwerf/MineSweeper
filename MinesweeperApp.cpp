@@ -55,6 +55,6 @@ win game
 
 create how to play section and new game
 
-make rand() being the same
+make rand() stop being the same
 
 */
