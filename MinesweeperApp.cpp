@@ -27,6 +27,9 @@ int main()
 				gameover = true;
 				board.revealAllTiles();
 			}
+			// if reveal a 0 tile also reveal neighbours
+			// if any of these are also 0 reveal all their neighbours
+
 		}
 		else if (k == 'f') {
 			board.getTile(Position(i, j), board).setFlagged(true);
@@ -43,3 +46,15 @@ int main()
 
 
 }
+
+/*
+TODO LIST
+recursively reveal neighbour squares after revealing a 0 tile
+
+win game 
+
+create how to play section and new game
+
+make rand() being the same
+
+*/
