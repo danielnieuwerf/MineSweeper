@@ -162,7 +162,7 @@ public:
 	// other methods
 	void printBoard() {
 		setRemaining();
-		cout << "Remaining: " << remaining << endl;
+		cout << "Remaining: " << remaining <<"\t Bombs:"<<countBombs()<< endl;
 		cout << "   0  1  2  3  4  5  6  7  8  9 10"<<
 			" 11 12 13 14 15 16 17 18 19"<<endl;
 		for (int i = 0; i < boardLength; ++i) {
@@ -467,6 +467,19 @@ public:
 			}
 		}	
 	}
-
+	int countBombs() {
+		// count number of unflagged bombs
+		int count = 0;
+		for (int i = 0; i < boardLength; ++i) {
+			for (int j = 0; j < boardWidth; ++j) {
+				if (getTile(Position(i, j), *this).isBomb()&&
+					!getTile(Position(i,j),*this).isFlagged()) {
+					count++;
+				}
+					
+			}
+		}
+		return count;
+	}
 };
 

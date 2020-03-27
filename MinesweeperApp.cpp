@@ -10,15 +10,15 @@ int main()
 	int i, j, bombs;
 	char k;
 	bool gameover = false;
-	cout << "Choose difficulty: ";
+	cout << "Choose difficulty (e-easy, m-medium, h-hard): ";
 	char d = 'e';
 	cin >> d;
 	switch (d) {
 	case 'e': bombs=20;
 		break;
-	case 'm': bombs=40;
+	case 'm': bombs=50;
 		break;
-	case 'h': bombs=60;
+	case 'h': bombs=80;
 		break;
 	default:
 		bombs = 40;
@@ -40,8 +40,8 @@ int main()
 				gameover = true;
 				board.revealAllTiles();
 			}
-			// if reveal a 0 tile also reveal neighbours
-			// if any of these are also 0 reveal all their neighbours
+			// if a 0 tile is revealed also reveal its neighbours
+			// if any of these neighbours are also 0 reveal all their neighbours too
 			if (board.getTile(Position(i, j), board).getNeighbours() == 0) {
 				board.revealNeighbours(Position(i,j),board);
 			
