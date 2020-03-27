@@ -20,6 +20,9 @@ public:
 	int &getNeighbours() {
 		return neighbours;
 	}
+	bool isFlaggedOrBomb() {
+		return (isFlagged() || isBomb());
+	}
 	//setters
 	void setRevealed(bool r) {
 		revealed = r;
