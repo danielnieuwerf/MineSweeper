@@ -1,10 +1,7 @@
 # MineSweeper
-
 Skills practiced:
 -OOP
 -Recursive functions
-
-
 
 How to play:
 Examples of moves:
