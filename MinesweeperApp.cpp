@@ -9,7 +9,7 @@ int main()
 {
 	int i, j, bombs;
 	char k;
-	bool gameover = false;
+	bool gameover = false, gamewon=false;
 	cout << "Choose difficulty (e-easy, m-medium, h-hard): ";
 	char d = 'e';
 	cin >> d;
@@ -58,9 +58,17 @@ int main()
 		}
 		system("cls");
 		board.printBoard();
+		if (board.boardIsClear()) {
+			gameover = true;
+			gamewon = true;
+		}
 	}
-	
-	cout << "Game over";
+	if (gamewon) {
+		cout << "Congratulations! You cleared all the mines";
+	}
+	else {
+		cout << "Game over";
+	}
 
 
 

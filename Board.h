@@ -481,5 +481,8 @@ public:
 		}
 		return count;
 	}
+	bool boardIsClear() {
+		return countBombs() == 0;
+	}
 };
 
