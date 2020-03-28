@@ -80,82 +80,46 @@ public:
 				}
 			}
 		}
+
 		int temp2[boardLength][boardWidth];	// number of neighbours
 		for (int i = 0; i < boardLength; ++i) {
 			for (int j = 0; j < boardWidth; ++j) {
 				temp2[i][j] = 0;
 			}
 		}
-		//edges
-		for (int i = 1; i < boardWidth - 1; ++i) {
-			if (temp[i][0] == 'y') {
-				temp2[i][1]++;
-				temp2[i - 1][0]++;
-				temp2[i + 1][0]++;
-				temp2[i - 1][1]++;
-				temp2[i + 1][1]++;
-			}
-			if (temp[i][boardWidth - 1] == 'y') {
-				temp2[i][boardWidth - 2]++;
-				temp2[i - 1][boardWidth - 2]++;
-				temp2[i + 1][boardWidth - 2]++;
-				temp2[i - 1][boardWidth - 1]++;
-				temp2[i + 1][boardWidth - 1]++;
-			}
-		}
-		for (int i = 1; i < boardLength - 1; ++i) {
-			if (temp[0][i] == 'y') {
-				temp2[1][i + 1]++;
-				temp2[0][i - 1]++;
-				temp2[0][i + 1]++;
-				temp2[1][i - 1]++;
-				temp2[1][i]++;
-			}
-			if (temp[boardWidth - 1][i] == 'y') {
-				temp2[boardWidth - 2][i]++;
-				temp2[boardWidth - 2][i - 1]++;
-				temp2[boardWidth - 2][i + 1]++;
-				temp2[boardWidth - 1][i - 1]++;
-				temp2[boardWidth - 1][i + 1]++;
-			}
-		}
-		//corners
-		if (temp[0][0] == 'y') {
-			temp2[0][1]++;
-			temp2[1][1]++;
-			temp2[1][0]++;
-		}
-		if (temp[boardLength - 1][0] == 'y') {
-			temp2[boardLength - 1][1]++;
-			temp2[boardLength - 2][1]++;
-			temp2[boardLength - 2][0]++;
-		}
-		if (temp[0][boardLength - 1] == 'y') {
-			temp2[1][boardLength - 1]++;
-			temp2[1][boardLength - 2]++;
-			temp2[0][boardLength - 2]++;
-		}
-		if (temp[boardWidth - 1][boardLength - 1] == 'y') {
-			temp2[boardWidth - 2][boardLength - 1]++;
-			temp2[boardWidth - 2][boardLength - 2]++;
-			temp2[boardWidth - 1][boardLength - 2]++;
-		}
-		//central squares
-		for (int i = 1; i < boardLength - 1; ++i) {
-			for (int j = 1; j < boardWidth - 1; ++j) {
+
+		// set temp2 to the correct values
+		for (int i = 0; i < boardLength; ++i) {
+			for (int j = 0; j < boardWidth; ++j) {
 				if (temp[i][j] == 'y') {
-					temp2[i][j - 1]++;
-					temp2[i][j + 1]++;
-					temp2[i - 1][j]++;
-					temp2[i + 1][j + 1]++;
-					temp2[i + 1][j - 1]++;
-					temp2[i + 1][j]++;
-					temp2[i - 1][j + 1]++;
-					temp2[i - 1][j - 1]++;
+					if (j != 0) {
+						temp2[i][j - 1]++;
+					}
+					if (j != boardWidth - 1) {
+						temp2[i][j + 1]++;
+					}
+					if (i != 0) {
+						temp2[i - 1][j]++;
+					}
+					if (i != boardLength - 1 && j != boardWidth - 1) {
+						temp2[i + 1][j + 1]++;
+					}
+					if (i != boardLength - 1 && j != 0) {
+						temp2[i + 1][j - 1]++;
+					}
+					if (i != boardLength - 1) {
+						temp2[i + 1][j]++;
+					}
+					if (i != 0 && j != boardWidth - 1) {
+						temp2[i - 1][j + 1]++;
+					}
+					if (i != 0 && j != 0) {
+						temp2[i - 1][j - 1]++;
+					}
 				}
 			}
 		}
-		// set neighbours in board corresponding to temp2
+		// set neighbours in board as in temp2
 		for (int i = 0; i < boardLength; ++i) {
 			for (int j = 0; j < boardWidth; ++j) {
 				Tile& tile = getTile(Position(i, j), b);
@@ -215,55 +179,53 @@ public:
 		int y = pos.getY();
 
 		if (y!=0 && !b.getTile(Position(x, y - 1), b).isRevealed()) {
-				b.getTile(Position(x, y - 1), b).setRevealed(true);
-				if (b.getTile(Position(x, y - 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x, y - 1), b);
-				}
+			b.getTile(Position(x, y - 1), b).setRevealed(true);
+			if (b.getTile(Position(x, y - 1), b).getNeighbours() == 0) {
+				revealNeighbours(Position(x, y - 1), b);
 			}
+		}
 		if (y!=boardWidth-1 && !b.getTile(Position(x, y + 1), b).isRevealed()) {
-				b.getTile(Position(x, y + 1), b).setRevealed(true);
-				if (b.getTile(Position(x, y + 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x, y + 1), b);
-				}
+			b.getTile(Position(x, y + 1), b).setRevealed(true);
+			if (b.getTile(Position(x, y + 1), b).getNeighbours() == 0) {
+				revealNeighbours(Position(x, y + 1), b);
 			}
+		}
 		if (x!=0 && y!=0 && !b.getTile(Position(x - 1, y - 1), b).isRevealed()) {
-				b.getTile(Position(x - 1, y - 1), b).setRevealed(true);
-				if (b.getTile(Position(x - 1, y - 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x - 1, y - 1), b);
-				}
+			b.getTile(Position(x - 1, y - 1), b).setRevealed(true);
+			if (b.getTile(Position(x - 1, y - 1), b).getNeighbours() == 0) {
+				revealNeighbours(Position(x - 1, y - 1), b);
 			}
+		}
 		if (x!=0 && !b.getTile(Position(x - 1, y), b).isRevealed()) {
-				b.getTile(Position(x - 1, y), b).setRevealed(true);
-				if (b.getTile(Position(x - 1, y), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x - 1, y), b);
-				}
+			b.getTile(Position(x - 1, y), b).setRevealed(true);
+			if (b.getTile(Position(x - 1, y), b).getNeighbours() == 0) {
+				revealNeighbours(Position(x - 1, y), b);
 			}
+		}
 		if (x!=0 && y!=boardWidth-1 && !b.getTile(Position(x - 1, y + 1), b).isRevealed()) {
-				b.getTile(Position(x - 1, y + 1), b).setRevealed(true);
-				if (b.getTile(Position(x - 1, y + 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x - 1, y + 1), b);
-				}
+			b.getTile(Position(x - 1, y + 1), b).setRevealed(true);
+			if (b.getTile(Position(x - 1, y + 1), b).getNeighbours() == 0) {
+				revealNeighbours(Position(x - 1, y + 1), b);
 			}
+		}
 		if (x!=boardLength-1 &&y!=0 && !b.getTile(Position(x + 1, y - 1), b).isRevealed()) {
-				b.getTile(Position(x + 1, y - 1), b).setRevealed(true);
-				if (b.getTile(Position(x + 1, y - 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x + 1, y - 1), b);
-				}
+			b.getTile(Position(x + 1, y - 1), b).setRevealed(true);
+			if (b.getTile(Position(x + 1, y - 1), b).getNeighbours() == 0) {
+				revealNeighbours(Position(x + 1, y - 1), b);
 			}
+		}
 		if (x!=boardLength-1 && !b.getTile(Position(x + 1, y), b).isRevealed()) {
-				b.getTile(Position(x + 1, y), b).setRevealed(true);
-				if (b.getTile(Position(x + 1, y), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x + 1, y), b);
-				}
+			b.getTile(Position(x + 1, y), b).setRevealed(true);
+			if (b.getTile(Position(x + 1, y), b).getNeighbours() == 0) {
+				revealNeighbours(Position(x + 1, y), b);
 			}
+		}
 		if (x!=boardLength-1 && y!=boardWidth-1 && !b.getTile(Position(x + 1, y + 1), b).isRevealed()) {
-				b.getTile(Position(x + 1, y + 1), b).setRevealed(true);
-				if (b.getTile(Position(x + 1, y + 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x + 1, y + 1), b);
-				}
-			}		
-		
-		
+			b.getTile(Position(x + 1, y + 1), b).setRevealed(true);
+			if (b.getTile(Position(x + 1, y + 1), b).getNeighbours() == 0) {
+				revealNeighbours(Position(x + 1, y + 1), b);
+			}
+		}				
 	}
 	int countBombs() {
 		// count number of unflagged bombs
