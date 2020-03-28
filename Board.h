@@ -31,7 +31,13 @@ public:
 		remaining = 400;
 		setNeighbours(*this);
 	}
-	Board(){}
+	Board(){
+		for (int i = 0; i < boardLength; ++i) {
+			for (int j = 0; j < boardWidth; ++j) {
+				board[i][j] = Tile();
+			}
+		}
+	}
 	~Board(){}
 	
 	// getters and setters
@@ -180,7 +186,9 @@ public:
 					cout << "|B|";
 				}
 				else if (board[i][j].isRevealed() && !board[i][j].isBomb()) {
-					cout << "|" << board[i][j].getNeighbours() << "|";
+					board[i][j].getNeighbours()==0 ?
+						cout << "| |": 
+						cout << "|" << board[i][j].getNeighbours() << "|";			
 				}
 				else if (board[i][j].isFlagged()) {
 					cout << "|F|";
@@ -205,267 +213,57 @@ public:
 
 		int x = pos.getX();
 		int y = pos.getY();
-		// if pos is a corner square
-		if (x == 0 && y == 0) {
-			if (!b.getTile(Position(1, 0), b).isRevealed()) {
-				b.getTile(Position(1, 0), b).setRevealed(true);
-				if (b.getTile(Position(1,0), b).getNeighbours() == 0) {
-					revealNeighbours(Position(1,0), b);
-				}
-			}
-			if (!b.getTile(Position(1, 1), b).isRevealed()) {
-				b.getTile(Position(1, 1), b).setRevealed(true);
-				if (b.getTile(Position(1, 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(1, 1), b);
-				}
-			}
-			if (!b.getTile(Position(0, 1), b).isRevealed()) {
-				b.getTile(Position(0, 1), b).setRevealed(true);
-				if (b.getTile(Position(0,1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(0,1), b);
-				}
-			}
-		}
-		else if (x == 0 && y == boardWidth-1) {
-			if(!b.getTile(Position(0, y-1), b).isRevealed()) {
-				b.getTile(Position(0, y-1), b).setRevealed(true);
-				if (b.getTile(Position(0, y - 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(0, y - 1), b);
-				}
-			}
-			if (!b.getTile(Position(1, y-1), b).isRevealed()) {
-				b.getTile(Position(1, y - 1), b).setRevealed(true);
-				if (b.getTile(Position(1, y - 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(1, y - 1), b);
-				}
-			}
-			if (!b.getTile(Position(1, y), b).isRevealed()) {
-				b.getTile(Position(1, y), b).setRevealed(true);
-				if (b.getTile(Position(1, y), b).getNeighbours() == 0) {
-					revealNeighbours(Position(1, y), b);
-				}
-			}
-		}
-		else if (x == boardLength-1 && y == 0) {
-			if (!b.getTile(Position(x-1, 0), b).isRevealed()) {
-				b.getTile(Position(x-1, 0), b).setRevealed(true);
-				if (b.getTile(Position(x-1, 0), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x-1, 0), b);
-				}
-			}
-			if (!b.getTile(Position(x-1, 1), b).isRevealed()) {
-				b.getTile(Position(x-1, 1), b).setRevealed(true);
-				if (b.getTile(Position(x-1, 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x-1, 1), b);
-				}
-			}
-			if (!b.getTile(Position(x, 1), b).isRevealed()) {
-				b.getTile(Position(x, 1), b).setRevealed(true);
-				if (b.getTile(Position(x, 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x, 1), b);
-				}
-			}
-		}
-		else if (x == boardLength-1 && y == boardWidth-1) {
-			if (!b.getTile(Position(x, y-1), b).isRevealed()) {
+
+		if (y!=0 && !b.getTile(Position(x, y - 1), b).isRevealed()) {
 				b.getTile(Position(x, y - 1), b).setRevealed(true);
 				if (b.getTile(Position(x, y - 1), b).getNeighbours() == 0) {
 					revealNeighbours(Position(x, y - 1), b);
 				}
 			}
-			if (!b.getTile(Position(x-1, y), b).isRevealed()) {
-				b.getTile(Position(x-1, y), b).setRevealed(true);
-				if (b.getTile(Position(x-1, y), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x-1, y), b);
-				}
-			}
-			if (!b.getTile(Position(x-1, y-1), b).isRevealed()) {
-				b.getTile(Position(x-1, y-1), b).setRevealed(true);
-				if (b.getTile(Position(x-1, y - 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x-1, y - 1), b);
-				}
-			}
-		}
-		// central square
-		else if (x > 0 && x < boardLength - 1 && y > 0 && y < boardWidth - 1) {
-			if (!b.getTile(Position(x, y - 1), b).isRevealed()) {
-				b.getTile(Position(x, y - 1), b).setRevealed(true);
-				if (b.getTile(Position(x, y - 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x, y - 1), b);
-				}
-			}
-			if (!b.getTile(Position(x, y + 1), b).isRevealed()) {
+		if (y!=boardWidth-1 && !b.getTile(Position(x, y + 1), b).isRevealed()) {
 				b.getTile(Position(x, y + 1), b).setRevealed(true);
 				if (b.getTile(Position(x, y + 1), b).getNeighbours() == 0) {
 					revealNeighbours(Position(x, y + 1), b);
 				}
 			}
-			if (!b.getTile(Position(x - 1, y - 1), b).isRevealed()) {
+		if (x!=0 && y!=0 && !b.getTile(Position(x - 1, y - 1), b).isRevealed()) {
 				b.getTile(Position(x - 1, y - 1), b).setRevealed(true);
 				if (b.getTile(Position(x - 1, y - 1), b).getNeighbours() == 0) {
 					revealNeighbours(Position(x - 1, y - 1), b);
 				}
 			}
-			if (!b.getTile(Position(x - 1, y), b).isRevealed()) {
+		if (x!=0 && !b.getTile(Position(x - 1, y), b).isRevealed()) {
 				b.getTile(Position(x - 1, y), b).setRevealed(true);
 				if (b.getTile(Position(x - 1, y), b).getNeighbours() == 0) {
 					revealNeighbours(Position(x - 1, y), b);
 				}
 			}
-			if (!b.getTile(Position(x - 1, y + 1), b).isRevealed()) {
+		if (x!=0 && y!=boardWidth-1 && !b.getTile(Position(x - 1, y + 1), b).isRevealed()) {
 				b.getTile(Position(x - 1, y + 1), b).setRevealed(true);
 				if (b.getTile(Position(x - 1, y + 1), b).getNeighbours() == 0) {
 					revealNeighbours(Position(x - 1, y + 1), b);
 				}
 			}
-			if (!b.getTile(Position(x + 1, y - 1), b).isRevealed()) {
+		if (x!=boardLength-1 &&y!=0 && !b.getTile(Position(x + 1, y - 1), b).isRevealed()) {
 				b.getTile(Position(x + 1, y - 1), b).setRevealed(true);
 				if (b.getTile(Position(x + 1, y - 1), b).getNeighbours() == 0) {
 					revealNeighbours(Position(x + 1, y - 1), b);
 				}
 			}
-			if (!b.getTile(Position(x + 1, y), b).isRevealed()) {
+		if (x!=boardLength-1 && !b.getTile(Position(x + 1, y), b).isRevealed()) {
 				b.getTile(Position(x + 1, y), b).setRevealed(true);
 				if (b.getTile(Position(x + 1, y), b).getNeighbours() == 0) {
 					revealNeighbours(Position(x + 1, y), b);
 				}
 			}
-			if (!b.getTile(Position(x + 1, y + 1), b).isRevealed()) {
+		if (x!=boardLength-1 && y!=boardWidth-1 && !b.getTile(Position(x + 1, y + 1), b).isRevealed()) {
 				b.getTile(Position(x + 1, y + 1), b).setRevealed(true);
 				if (b.getTile(Position(x + 1, y + 1), b).getNeighbours() == 0) {
 					revealNeighbours(Position(x + 1, y + 1), b);
 				}
 			}		
-		}
-		// edge but not corner
-		else if (x == 0 && y != 0 && y != boardWidth - 1) {
-			if (!b.getTile(Position(0, y - 1), b).isRevealed()) {
-				b.getTile(Position(0, y - 1), b).setRevealed(true);
-				if (b.getTile(Position(0, y - 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(0, y - 1), b);
-				}
-			}
-			if (!b.getTile(Position(1, y - 1), b).isRevealed()) {
-				b.getTile(Position(1, y - 1), b).setRevealed(true);
-				if (b.getTile(Position(1, y - 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(1, y - 1), b);
-				}
-			}
-			if (!b.getTile(Position(1, y), b).isRevealed()) {
-				b.getTile(Position(1, y), b).setRevealed(true);
-				if (b.getTile(Position(1, y), b).getNeighbours() == 0) {
-					revealNeighbours(Position(1, y), b);
-				}
-			}
-			if (!b.getTile(Position(0, y + 1), b).isRevealed()) {
-				b.getTile(Position(0, y + 1), b).setRevealed(true);
-				if (b.getTile(Position(0, y + 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(0, y + 1), b);
-				}
-			}
-			if (!b.getTile(Position(1, y + 1), b).isRevealed()) {
-				b.getTile(Position(1, y + 1), b).setRevealed(true);
-				if (b.getTile(Position(1, y + 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(1, y + 1), b);
-				}
-			}
-		}
-		else if (x == boardLength-1 && y != 0 && y != boardWidth - 1) {
-			if (!b.getTile(Position(x, y - 1), b).isRevealed()) {
-				b.getTile(Position(x, y - 1), b).setRevealed(true);
-				if (b.getTile(Position(x, y - 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x, y - 1), b);
-				}
-			}
-			if (!b.getTile(Position(x-1, y - 1), b).isRevealed()) {
-				b.getTile(Position(x-1, y - 1), b).setRevealed(true);
-				if (b.getTile(Position(x-1, y - 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x-1, y - 1), b);
-				}
-			}
-			if (!b.getTile(Position(x-1, y), b).isRevealed()) {
-				b.getTile(Position(x-1, y), b).setRevealed(true);
-				if (b.getTile(Position(x-1, y), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x-1, y), b);
-				}
-			}
-			if (!b.getTile(Position(x, y + 1), b).isRevealed()) {
-				b.getTile(Position(x, y + 1), b).setRevealed(true);
-				if (b.getTile(Position(x, y + 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x, y + 1), b);
-				}
-			}
-			if (!b.getTile(Position(x-1, y + 1), b).isRevealed()) {
-				b.getTile(Position(x-1, y + 1), b).setRevealed(true);
-				if (b.getTile(Position(x-1, y +1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x-1, y + 1), b);
-				}
-			}
-		}
-		else if (y == 0 && x != 0 && x != boardLength - 1) {
-			if (!b.getTile(Position(x+1, 0), b).isRevealed()) {
-				b.getTile(Position(x+1, 0), b).setRevealed(true);
-				if (b.getTile(Position(x+1, 0), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x+1, 0), b);
-				}
-			}
-			if (!b.getTile(Position(x-1, 0), b).isRevealed()) {
-				b.getTile(Position(x - 1, 0), b).setRevealed(true);
-				if (b.getTile(Position(x-1, 0), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x-1, 0), b);
-				}
-			}
-			if (!b.getTile(Position(x-1, 1), b).isRevealed()) {
-				b.getTile(Position(x - 1, 1), b).setRevealed(true);
-				if (b.getTile(Position(x-1, 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x-1, 1), b);
-				}
-			}
-			if (!b.getTile(Position(x, 1), b).isRevealed()) {
-				b.getTile(Position(x, 1), b).setRevealed(true);
-				if (b.getTile(Position(x, 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x, 1), b);
-				}
-			}
-			if (!b.getTile(Position(x+1, 1), b).isRevealed()) {
-				b.getTile(Position(x + 1, 1), b).setRevealed(true);
-				if (b.getTile(Position(x+1, 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x+1, 1), b);
-				}
-			}
-		}
-		else if (y == boardWidth - 1 && x != 0 && x != boardLength - 1) {
-			if (!b.getTile(Position(x-1, y), b).isRevealed()) {
-				b.getTile(Position(x-1, y), b).setRevealed(true);
-				if (b.getTile(Position(x-1, y), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x-1, y), b);
-				}
-			}
-			if (!b.getTile(Position(x+1, y), b).isRevealed()) {
-				b.getTile(Position(x + 1, y), b).setRevealed(true);
-				if (b.getTile(Position(x+1, y), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x+1, y), b);
-				}
-			}
-			if (!b.getTile(Position(x-1, y - 1), b).isRevealed()) {
-				b.getTile(Position(x - 1, y-1), b).setRevealed(true);
-				if (b.getTile(Position(x-1, y - 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x-1, y - 1), b);
-				}
-			}
-			if (!b.getTile(Position(x, y - 1), b).isRevealed()) {
-				b.getTile(Position(x, y - 1), b).setRevealed(true);
-				if (b.getTile(Position(x, y - 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x, y - 1), b);
-				}
-			}
-			if (!b.getTile(Position(x+1, y - 1), b).isRevealed()) {
-				b.getTile(Position(x + 1, y - 1), b).setRevealed(true);
-				if (b.getTile(Position(x+1, y - 1), b).getNeighbours() == 0) {
-					revealNeighbours(Position(x+1, y - 1), b);
-				}
-			}
-		}	
+		
+		
 	}
 	int countBombs() {
 		// count number of unflagged bombs
