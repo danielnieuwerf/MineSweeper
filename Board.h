@@ -37,6 +37,7 @@ public:
 				board[i][j] = Tile();
 			}
 		}
+		remaining = 1;
 	}
 	~Board(){}
 	
